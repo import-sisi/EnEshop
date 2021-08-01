@@ -13,6 +13,9 @@ from .utils import get_client_ip
 User = settings.AUTH_USER_MODEL
 
 # Create your models here.
+FORCE_SESSION_TO_ONE = getattr(settings, 'FORCE_SESSION_TO_ONE', False)
+FORCE_INACTIVE_UER_ENDSESSION = getattr(settings, 'FORCE_INACTIVE_UER_ENDSESSION', False)
+
 class ObjectViewed(models.Model):
     user            = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE) #User instance instance.id
     content_type    = models.ForeignKey(ContentType, on_delete=models.SET_NULL, null=True) #User, Products, Order, Cart, Address
@@ -33,7 +36,7 @@ class ObjectViewed(models.Model):
 def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     c_type = ContentType.objects.get_for_model(sender) # instance.__class__
     
-    user = None
+    # user = None
     new_view_obj = ObjectViewed.objects.create(
         user = request.user,
         content_type = c_type,
@@ -71,8 +74,21 @@ def post_save_session_receiver(sender, instance, created, *args, **kwargs):
             i.end_session()
     if not instance.active and not instance.ended:
         instance.end_session()
+if FORCE_SESSION_TO_ONE:
+    post_save.connect(post_save_session_receiver, sender=UserSession)
 
-post_save.connect(post_save_session_receiver, sender=UserSession)
+def post_save_user_changed_receiver(sender, instance, created, *args, **kwargs):
+    if not created:
+        if instance.is_active == False:
+            qs = UserSession.objects.filter(user=instance.user, ended=False, active=False)
+            for i in qs:
+                i.end_session()
+
+if FORCE_INACTIVE_UER_ENDSESSION:
+    post_save.connect(post_save_user_changed_receiver, sender=User)
+
+
+
 
 def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
     user = instance
