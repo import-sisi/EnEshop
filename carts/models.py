@@ -1,12 +1,12 @@
 from decimal import Decimal
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save, m2m_changed
+from django.conf import settings
 
 
 from products.models import Product
 
-# User = settings.AUTH_USER_MODEL
+User = settings.AUTH_USER_MODEL
 # Create your models here.
 class CartManager(models.Manager):
     '''
@@ -38,6 +38,7 @@ class CartManager(models.Manager):
             if user.is_authenticated:
                 user_obj = user
         return self.model.objects.create(user=user_obj)
+
 
 class Cart(models.Model):
     user        = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)

@@ -1,5 +1,7 @@
 
+from django.http.response import HttpResponse
 from django.shortcuts import render 
+from django.http import JsonResponse
 
 from ecommerce.forms import ContactForm
 
@@ -18,25 +20,19 @@ def about_page(request):
 
 def contact_page(request):
     contact_form = ContactForm(request.POST or None)
-
-    if contact_form.is_valid():
-        # full_name = contact_form.cleaned_data.get('full_name')
-        # email = contact_form.cleaned_data.get('email')
-        # subject = contact_form.cleaned_data.get('subject')
-        # text = contact_form.cleaned_data.get('text')
-        # ContactUs.objects.create(full_name=full_name, email=email, subject=subject, text=text, is_read=False)
-        # todo : show user a success message
-        contact_form = ContactForm()
-
     context = {
         "form": contact_form,
         "title": "Cntact page",
-
     }
-    # if request.method == "POST":
-    #     # print(request.POST)
-    #     print(request.POST.get('fullname'))
-    #     print(request.POST.get('email'))
-    #     print(request.POST.get('content'))
+    if contact_form.is_valid():
+        print(contact_form.cleaned_data)
+        if request.is_ajax():
+            return JsonResponse({"message": "Thank you for your submission"})
+
+    if contact_form.errors:
+        errors = contact_form.errors.as_json()
+        if request.is_ajax():
+            return HttpResponse(errors, status=400, content_type='application/json')
+
     return render(request, 'contact/view.html', context)
 
