@@ -54,6 +54,9 @@ AUTH_USER_MODEL = 'accounts.User'  #chenges the built-in user model to ours
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_UER_ENDSESSION = False
 
+STRIPE_SECRET_KEY = "sk_test_51JJfNZB87P9lK1Pvk2Cub1nbWDn2oR4DHelr4at4O1uQlnfB5gTVKzBT2B1uwJzOMlsblyjkJOR6BEcEwfYdHYsO00yG8SvVo1"
+STRIPE_PUB_KEY = "pk_test_51JJfNZB87P9lK1PvKWwGGjyjMrqirxUTEqwen8RpRFa8VgZWVrqJxp7GqkKMx1cYyIyktTe7m0Msa0rb8sZIrsv300EUXNDHZK"
+
 
 
 MIDDLEWARE = [

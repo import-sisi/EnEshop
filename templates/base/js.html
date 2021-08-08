@@ -12,12 +12,22 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 -->
 
+<!-- Stripe JS -->
+<script src="https://js.stripe.com/v3/"></script>
+
+
 <!-- Django Secoure AJAX JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
+<!-- js Render-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.11/jsrender.min.js" integrity="sha512-bKlNlbTH3duwZ28zoqEhXui/yuaPuQVci6OAVu0zh2WfYbEKD39HszVR8byP4/L4YyBo3b5CGIY+4ldVN93uCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% include 'base/js_templates.html' %}
 
 <!-- eCommerce Custom JS -->
 <script src='{% static "js/csrf.ajax.js" %}' ></script>
 
 <!-- eCommerce Custom JS -->
 <script src='{% static "js/ecommerce.js" %}' ></script>
+
+<!-- eCommerce Main JS -->
+<script src='{% static "js/ecommerce.main.js" %}' ></script>
